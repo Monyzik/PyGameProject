@@ -1,7 +1,7 @@
 import math
 
 import pygame
-from Object import Object
+from classes.Object import Object
 
 
 class Enemy(Object):

@@ -1,7 +1,7 @@
 import pygame
 from pygame.sprite import Sprite
 
-from Camera import Camera
+from classes.Camera import Camera
 
 
 class Object(Sprite):
