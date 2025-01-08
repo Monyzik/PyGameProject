@@ -10,8 +10,8 @@ class Camera:
         self.dy = 0
 
     def move(self, vector, obj):
-        camera.dx += vector[0] * obj.speed
-        camera.dy += vector[1] * obj.speed
+        self.dx += vector[0] * obj.speed
+        self.dy += vector[1] * obj.speed
 
     def update(self, target):
         sprite = pygame.sprite.spritecollideany(target, self.objects)
@@ -22,10 +22,10 @@ class Camera:
             f_4 = target.rect.bottom - sprite.rect.top
             mini = min(f_1, f_2, f_3, f_4)
             if target.rect.left <= sprite.rect.right and target.rect.center[0] >= sprite.rect.center[0] and f_1 == mini:
-                camera.dx += sprite.rect.right - target.rect.left
+                self.dx += sprite.rect.right - target.rect.left
             if target.rect.top <= sprite.rect.bottom and target.rect.center[1] >= sprite.rect.center[1] and f_2 == mini:
-                camera.dy += sprite.rect.bottom - target.rect.top
+                self.dy += sprite.rect.bottom - target.rect.top
             if target.rect.right >= sprite.rect.left and target.rect.center[0] <= sprite.rect.center[0] and f_3 == mini:
-                camera.dx -= target.rect.right - sprite.rect.left
+                self.dx -= target.rect.right - sprite.rect.left
             if target.rect.bottom >= sprite.rect.top and target.rect.center[1] <= sprite.rect.center[1] and f_4 == mini:
-                camera.dy -= target.rect.bottom - sprite.rect.top
+                self.dy -= target.rect.bottom - sprite.rect.top

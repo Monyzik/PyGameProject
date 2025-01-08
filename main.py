@@ -41,13 +41,12 @@ if __name__ == '__main__':
     grass.image = pygame.transform.scale(grass.image, (width * 2, height * 2))
     path = "images/cat.png"
     player = Player(all_sprites, path, (width // 2, height // 2))
-    enemy = Enemy(all_sprites, path, camera, width // 3, height // 3)
-    enemies.add(enemy)
-
+    enemy = Enemy(enemies, path, camera, width // 3, height // 3)
     while True:
         screen.fill((255, 255, 255))
+        clock.tick(FPS)
         camera.update(player)
-        pass
+        # pass
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
@@ -65,10 +64,11 @@ if __name__ == '__main__':
 
         if vector != [0, 0]:
             camera.move(vector, player)
-
         all_sprites.draw(screen)
         all_sprites.update()
-
+        enemies.update()
+        enemy.move_towards_player(player)
+        enemies.draw(screen)
         pygame.display.flip()
-        clock.tick(30)
+        # clock.tick(30)
     pygame.quit()

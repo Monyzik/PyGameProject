@@ -10,7 +10,20 @@ class Enemy(Object):
         self.camera = camera
         self.damage = damage
         self.speed = speed
+        self.x = x
+        self.y = y
         self.hp = hp
+
+    def move_towards_player(self, player):
+        dx, dy = player.rect.x - self.rect.x, player.rect.y - self.rect.y
+        dist = math.hypot(dx, dy)
+        if dist < self.speed:  # TODO make normal condition to stop enemy, when he touch player
+            return
+        dx, dy = dx / dist, dy / dist
+        self.x += dx * self.speed
+        self.y += dy * self.speed
+        self.rect.x = self.x - self.camera.dx
+        self.rect.y = self.y - self.camera.dy
 
     def move(self):
         rel_x = self.camera.dx - self.x + self.camera.rect.centerx
@@ -25,4 +38,3 @@ class Enemy(Object):
 
     def update(self):
         self.move()
-        super().update()
