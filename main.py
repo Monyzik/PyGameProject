@@ -2,6 +2,8 @@ import sys
 
 import pygame
 
+from classes.Consts import *
+from classes.Bullet import Bullet
 from classes.Camera import Camera
 from classes.Enemy import Enemy
 from classes.Object import Object
@@ -10,7 +12,7 @@ from classes.Player import Player
 horizontal_borders = pygame.sprite.Group()
 vertical_borders = pygame.sprite.Group()
 
-FPS = 50
+sshoot_clock = pygame.time.Clock()
 
 
 def terminate():
@@ -32,27 +34,32 @@ if __name__ == '__main__':
     size = width, height = 1600, 900
     screen = pygame.display.set_mode(size)
     screen.fill((255, 255, 255))
-    all_sprites = pygame.sprite.Group()
-    objects = pygame.sprite.Group()
-    enemies = pygame.sprite.Group()
     path = "images/myGrass.png"
-    camera = Camera(width, height, objects)
-    grass = Object(all_sprites, path, camera, -(width // 2), -(height // 2))
+    camera = Camera(width, height)
+    grass = Object(path, camera, (0, 0), -(width // 2), -(height // 2))
     grass.image = pygame.transform.scale(grass.image, (width * 2, height * 2))
     path = "images/cat.png"
-    player = Player(all_sprites, path, (width // 2, height // 2))
-    enemy = Enemy(enemies, path, camera, width // 3, height // 3)
+    player = Player((width // 2, height // 2), (20, 20))
+    enemy = Enemy(path, camera, (20, 20), 0, height // 2)
+    enemy2 = Enemy(path, camera, (20, 20), width, height // 2)
+    enemy.add_collision_with_player()
+    enemy2.add_collision_with_player()
     while True:
         screen.fill((255, 255, 255))
         clock.tick(FPS)
         camera.update(player)
-        # pass
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 terminate()
         vector = [0, 0]
 
         key = pygame.key.get_pressed()
+        click = pygame.mouse.get_pressed()
+
+        if click[0]:
+            player.shoot(camera)
+
         if key[pygame.K_w]:
             vector[1] -= 1
         elif key[pygame.K_s]:
@@ -64,11 +71,16 @@ if __name__ == '__main__':
 
         if vector != [0, 0]:
             camera.move(vector, player)
-        all_sprites.draw(screen)
-        all_sprites.update()
-        enemies.update()
+        wall.update()
+        wall.draw(screen)
+
+        arr = sorted(list(all_sprites.sprites()), key=lambda x: x.rect.y)
         enemy.move_towards_player(player)
-        enemies.draw(screen)
+        enemy2.move_towards_player(player)
+        all_sprites.update()
+        for sprite in arr:
+            sprite.draw(screen)
+        # all_sprites.draw(screen)
+
         pygame.display.flip()
-        # clock.tick(30)
     pygame.quit()
