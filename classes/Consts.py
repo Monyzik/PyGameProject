@@ -8,7 +8,7 @@ enemies = pygame.sprite.Group()
 
 FPS = 60
 TIME_PER_SHOOT = 0.5 * 1_000 #ms
-TIME_PER_FRAME = 1000 / FPS #ms
+TIME_PER_FRAME = 800 / FPS #ms
 """Enemy"""
 MIN_ENEMY_SPEED = 330 #px per second
 
