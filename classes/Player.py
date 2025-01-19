@@ -28,6 +28,7 @@ class Player(Sprite):
         self.clock = pygame.time.Clock()
         self.time_per_shoot = 0
         self.time_per_damage = 0
+        self.time_animation = 0
 
         self.rect.x = self.x
         self.rect.y = self.y
@@ -68,15 +69,19 @@ class Player(Sprite):
 
 
     def draw(self, screen):
-        self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+        if self.time_animation >= TIME_PER_FRAME * 10:
+            self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+            self.time_animation = 0
         self.image = self.frames[self.cur_frame]
         screen.blit(self.image, self.rect)
+
 
 
     def update(self):
         t = self.clock.tick()
         self.time_per_shoot += t
         self.time_per_damage += t
+        self.time_animation += t
         pass
         # self.rotate()
 
