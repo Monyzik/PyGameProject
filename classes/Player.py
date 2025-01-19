@@ -1,6 +1,3 @@
-import math
-
-import pygame
 from pygame.sprite import Sprite
 
 from classes.Bullet import *
@@ -11,15 +8,22 @@ class Player(Sprite):
     def __init__(self, center, dw_dh):
         super().__init__(all_sprites)
         self.all_sprites = all_sprites
-        self.image = pygame.image.load(PLAYER_IMAGE)
-        self.root_image = pygame.image.load(PLAYER_IMAGE)
+        # self.image = pygame.image.load(PLAYER_IMAGE)
+        # self.root_image = pygame.image.load(PLAYER_IMAGE)
+        self.frames = []
+        self.cut_sheet(pygame.image.load(PLAYER_IMAGE), 1, 6)
+        self.cur_frame = 0
+        self.image = self.frames[self.cur_frame]
         self.rect = self.image.get_rect()
+
         self.x = center[0] - self.rect.width // 2
         self.y = center[1] - self.rect.height // 2
         self.hitbox_sprite = Sprite()
         self.hitbox_sprite.parent = self
         self.hitbox_sprite.rect = pygame.Rect(self.x + dw_dh[0], self.y + dw_dh[1], self.rect.width - 2 * dw_dh[0],
                                        self.rect.height - 2 * dw_dh[1])
+
+
         self.hitbox = self.hitbox_sprite.rect
         self.clock = pygame.time.Clock()
         self.time_per_shoot = 0
@@ -53,8 +57,19 @@ class Player(Sprite):
 
             self.time_per_damage = 0
 
+    def cut_sheet(self, sheet, columns, rows):
+        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
+                                sheet.get_height() // rows)
+        for j in range(rows):
+            for i in range(columns):
+                frame_location = (self.rect.w * i, self.rect.h * j)
+                self.frames.append(sheet.subsurface(pygame.Rect(
+                    frame_location, self.rect.size)))
+
 
     def draw(self, screen):
+        self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+        self.image = self.frames[self.cur_frame]
         screen.blit(self.image, self.rect)
 
 
