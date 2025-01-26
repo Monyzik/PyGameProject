@@ -1,18 +1,17 @@
 import pygame
 
+from classes.Animation import Animation
 from classes.Consts import *
 from classes.States import States
 
 
 class AnimatedObject:
-    def __init__(self, state: States, animation_idle=None, animation_run=None, animation_get_damage=None):
+    def __init__(self, state: States, animation_idle: Animation=None, animation_run: Animation=None, animation_get_damage: Animation=None):
         self.state = state
-        if animation_idle:
-            self.animation_idle = pygame.image.load(animation_idle)
-        if animation_run:
-            self.animation_run = pygame.image.load(animation_run)
-        if animation_get_damage:
-            self.animation_get_damage = pygame.image.load(animation_get_damage)
+
+        self.animation_idle = animation_idle
+        self.animation_run = animation_run
+        self.animation_get_damage = animation_get_damage
 
         self.last_update = pygame.time.get_ticks()
         self.cur_frame = 0
@@ -25,11 +24,11 @@ class AnimatedObject:
     def update_animation(self):
         match self.state:
             case States.run:
-                self.cut_sheet(self.animation_run, 1, 8)
+                self.cut_sheet(self.animation_run.get_surface(), *self.animation_run.get_size())
             case States.idle:
-                self.cut_sheet(self.animation_idle, 1, 6)
+                self.cut_sheet(self.animation_idle.get_surface(), *self.animation_idle.get_size())
             case States.get_damage:
-               self.cut_sheet(self.animation_get_damage, 1, 8)
+               self.cut_sheet(self.animation_get_damage.get_surface(), *self.animation_get_damage.get_size())
 
     def update(self):
         now = pygame.time.get_ticks()
@@ -41,7 +40,7 @@ class AnimatedObject:
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
         self.image = self.frames[self.cur_frame]
 
-    def cut_sheet(self, sheet, columns, rows):
+    def cut_sheet(self, sheet: pygame.Surface, columns: int, rows: int):
         if not sheet:
             return
         self.frames.clear()

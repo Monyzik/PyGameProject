@@ -2,13 +2,16 @@ import math
 
 import pygame
 
+from classes.AnimatedObject import AnimatedObject
 from classes.Consts import *
 from classes.Object import Object
+from classes.States import States
 
 
-class Enemy(Object):
+class Enemy(Object, AnimatedObject):
     def __init__(self, path, camera, dw_dh, x=0, y=0, damage=10, speed=MIN_ENEMY_SPEED, hp=50):
-        super().__init__(path, camera, dw_dh, x, y)
+        Object.__init__(self, path, camera, dw_dh, x, y)
+        AnimatedObject.__init__(self, state=States.run, animation_run=ENEMY_RUN_ANIMATION)
         self.camera = camera
         self.damage = damage
         self.speed = speed
@@ -25,6 +28,7 @@ class Enemy(Object):
         #     return
         dx, dy = dx * self.speed / dist / FPS, dy * self.speed / dist / FPS
         self.move(dx, dy)
+        AnimatedObject.update(self)
 
     # def rotate(self):
     #     rel_x = self.camera.dx - self.x + self.camera.rect.centerx

@@ -1,5 +1,7 @@
 import pygame
 
+from classes.Animation import Animation
+
 all_sprites = pygame.sprite.Group()
 wall = pygame.sprite.Group()
 objects = pygame.sprite.Group()
@@ -11,6 +13,7 @@ TIME_PER_SHOOT = 0.5 * 1_000 #ms
 TIME_PER_FRAME = 800 / FPS #ms
 """Enemy"""
 MIN_ENEMY_SPEED = 330 #px per second
+ENEMY_RUN_ANIMATION = Animation("animates/orc_walk_big.png", 8, 1)
 
 """Player"""
 PLAYER_SPEED = 400 #px per second
@@ -18,8 +21,8 @@ PLAYER_HP = 100
 PLAYER_DAMAGE = 10
 
 PLAYER_IMAGE = "animates/B_witch_idle_big.png"
-PLAYER_RUN_ANIMATION = "animates/B_witch_run_big.png"
-PLAYER_IDLE_ANIMATION = "animates/B_witch_idle_big.png"
+PLAYER_RUN_ANIMATION = Animation("animates/B_witch_run_big.png", 1, 8)
+PLAYER_IDLE_ANIMATION = Animation("animates/B_witch_idle_big.png", 1, 6)
 
 TIME_INVULNERABILITY = 0.3 * 1_000 #ms
 
