@@ -1,4 +1,5 @@
 import sys
+from multiprocessing.managers import State
 
 import pygame
 
@@ -8,6 +9,7 @@ from classes.Camera import Camera
 from classes.Enemy import Enemy
 from classes.Object import Object
 from classes.Player import Player
+from classes.States import States
 
 horizontal_borders = pygame.sprite.Group()
 vertical_borders = pygame.sprite.Group()
@@ -31,7 +33,7 @@ if __name__ == '__main__':
     clock = pygame.time.Clock()
     pygame.init()
     pygame.display.set_caption("Недореверси")
-    size = width, height = 1600, 900
+    size = width, height = WIDTH, HEIGHT
     screen = pygame.display.set_mode(size)
     screen.fill((255, 255, 255))
     path = "images/myGrass.png"
@@ -71,6 +73,9 @@ if __name__ == '__main__':
 
         if vector != [0, 0]:
             camera.move(vector, player)
+            player.change_state(States.run)
+        else:
+            player.change_state(States.idle)
         wall.update()
         wall.draw(screen)
 

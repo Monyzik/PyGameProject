@@ -14,7 +14,7 @@ class Camera:
         self.clock = pygame.time.Clock()
 
 
-    def move(self, vector: list[int, int], player: Player):
+    def move(self, vector: list[int], player: Player):
         if vector[0] and vector[1]:
             vector[0] /= 2 ** 0.5
             vector[1] /= 2 ** 0.5

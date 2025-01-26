@@ -5,7 +5,7 @@ wall = pygame.sprite.Group()
 objects = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 
-
+WIDTH, HEIGHT = 1600, 900
 FPS = 60
 TIME_PER_SHOOT = 0.5 * 1_000 #ms
 TIME_PER_FRAME = 800 / FPS #ms
@@ -16,7 +16,11 @@ MIN_ENEMY_SPEED = 330 #px per second
 PLAYER_SPEED = 400 #px per second
 PLAYER_HP = 100
 PLAYER_DAMAGE = 10
+
 PLAYER_IMAGE = "animates/B_witch_idle_big.png"
+PLAYER_RUN_ANIMATION = "animates/B_witch_run_big.png"
+PLAYER_IDLE_ANIMATION = "animates/B_witch_idle_big.png"
+
 TIME_INVULNERABILITY = 0.3 * 1_000 #ms
 
 
