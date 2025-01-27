@@ -16,7 +16,6 @@ class Bullet(Object):
         angle = math.atan2(rel_y, rel_x)
         self.angle = angle
         self.speed = BULLET_SPEED
-        self.clock = pygame.time.Clock()
         self.time = 0
         self.damage = player.damage
 

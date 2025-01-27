@@ -6,7 +6,7 @@ from classes.States import States
 
 
 class AnimatedObject:
-    def __init__(self, state: States, animation_idle: Animation = None, animation_run: Animation = None,
+    def __init__(self, state: States, animation_idle: Animation, animation_run: Animation = None,
                  animation_get_damage: Animation = None):
         self.state = state
 
@@ -14,14 +14,23 @@ class AnimatedObject:
         self.animation_run = animation_run
         self.animation_get_damage = animation_get_damage
 
+        self.sheet = self.animation_idle.get_surface()
+        columns, rows = self.animation_idle.get_size()
+        self.rect = pygame.Rect(0, 0, self.sheet.get_width() // columns,
+                                self.sheet.get_height() // rows)
+
         self.last_update = pygame.time.get_ticks()
         self.cur_frame = 0
         self.frames = []
         self.frame_rate = 100
         self.update_animation()
         self.image = self.frames[self.cur_frame]
+
         self.time_frame = 0
         self.clock = pygame.time.Clock()
+        self.t = 0
+
+
 
     def update_animation(self):
         if self.state == States.run:
@@ -32,9 +41,8 @@ class AnimatedObject:
             self.cut_sheet(self.animation_get_damage.get_surface(), *self.animation_get_damage.get_size())
 
     def update(self):
-        t = self.clock.tick()
-        self.time_frame += t
-
+        self.t = self.clock.tick()
+        self.time_frame += self.t
         if self.time_frame >= TIME_PER_FRAME * 10:
             self.play_next_frame()
 
@@ -48,8 +56,6 @@ class AnimatedObject:
         if not sheet:
             return
         self.frames.clear()
-        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
-                                sheet.get_height() // rows)
 
         for j in range(rows):
             for i in range(columns):

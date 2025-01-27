@@ -71,20 +71,19 @@ if __name__ == '__main__':
 
         if vector != [0, 0]:
             camera.move(vector, player)
-            # player.change_state(States.run)
+            player.change_state(States.run)
         else:
-            pass
-            # player.change_state(States.idle)
+            player.change_state(States.idle)
         # wall.update()
         wall.draw(screen)
 
         all_sprites.update()
-        arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
+        # arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
         enemy.move_towards_player(player)
         enemy2.move_towards_player(player)
-        for sprite in arr:
-            sprite.draw(screen)
-        # all_sprites.draw(screen)
+        # for sprite in arr:
+        #     sprite.draw(screen)
+        all_sprites.draw(screen)
 
         pygame.display.flip()
     pygame.quit()

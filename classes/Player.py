@@ -9,8 +9,7 @@ from classes.States import States
 class Player(Sprite, AnimatedObject):
     def __init__(self, center, margins_l_t_r_b: tuple[int, int, int, int]):
         Sprite.__init__(self, all_sprites)
-        AnimatedObject.__init__(self, state=States.idle, animation_idle=PLAYER_IDLE_ANIMATION,
-                                animation_run=PLAYER_RUN_ANIMATION)
+        AnimatedObject.__init__(self, state=States.idle, animation_idle=PLAYER_IDLE_ANIMATION, animation_run=PLAYER_RUN_ANIMATION)
         self.all_sprites = all_sprites
         self.margin_left, self.margin_top, self.margin_right, self.margin_bottom = margins_l_t_r_b
         self.frames = []
@@ -27,8 +26,8 @@ class Player(Sprite, AnimatedObject):
                                               self.rect.width - self.margin_left - self.margin_right,
                                               self.rect.height - self.margin_bottom - self.margin_top)
 
+
         self.hitbox = self.hitbox_sprite.rect
-        self.clock = pygame.time.Clock()
         self.time_per_shoot = 0
         self.time_per_damage = 0
         self.time_animation = 0
@@ -49,17 +48,17 @@ class Player(Sprite, AnimatedObject):
 
             self.time_per_damage = 0
 
+
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
-    def update(self):
-        AnimatedObject.update(self)
-        t = self.clock.tick()
-        self.time_per_shoot += t
-        self.time_per_damage += t
-        self.time_animation += t
 
-        pass
+    def update(self):
+        super().update()
+        AnimatedObject.update(self)
+        self.time_per_shoot += self.t
+        self.time_per_damage += self.t
+        self.time_animation += self.t
 
     def shoot(self, camera):
         if self.time_per_shoot >= TIME_PER_SHOOT:
