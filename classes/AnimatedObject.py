@@ -25,32 +25,26 @@ class AnimatedObject:
         self.frame_rate = 100
         self.update_animation()
         self.image = self.frames[self.cur_frame]
-
-        self.time_frame = 0
         self.clock = pygame.time.Clock()
-        self.t = 0
-
-
 
     def update_animation(self):
-        if self.state == States.run:
-            self.cut_sheet(self.animation_run.get_surface(), *self.animation_run.get_size())
-        elif self.state == States.idle:
-            self.cut_sheet(self.animation_idle.get_surface(), *self.animation_idle.get_size())
-        elif self.state == States.get_damage:
-            self.cut_sheet(self.animation_get_damage.get_surface(), *self.animation_get_damage.get_size())
+        match self.state:
+            case States.run:
+                self.cut_sheet(self.animation_run.get_surface(), *self.animation_run.get_size())
+            case States.idle:
+                self.cut_sheet(self.animation_idle.get_surface(), *self.animation_idle.get_size())
+            case States.get_damage:
+                self.cut_sheet(self.animation_get_damage.get_surface(), *self.animation_get_damage.get_size())
 
     def update(self):
-        self.t = self.clock.tick()
-        self.time_frame += self.t
-        if self.time_frame >= TIME_PER_FRAME * 10:
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.frame_rate:
             self.play_next_frame()
-
-        self.image = self.frames[self.cur_frame]
+            self.last_update = now
 
     def play_next_frame(self):
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
-        self.time_frame = 0
+        self.image = self.frames[self.cur_frame]
 
     def cut_sheet(self, sheet: pygame.Surface, columns: int, rows: int):
         if not sheet:
@@ -62,7 +56,6 @@ class AnimatedObject:
                 frame_location = (self.rect.w * i, self.rect.h * j)
                 self.frames.append(sheet.subsurface(pygame.Rect(
                     frame_location, self.rect.size)))
-        self.image = self.frames[self.cur_frame]
 
     def change_state(self, new_state: States):
         self.state = new_state

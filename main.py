@@ -78,12 +78,12 @@ if __name__ == '__main__':
         wall.draw(screen)
 
         all_sprites.update()
-        # arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
+        arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
         enemy.move_towards_player(player)
         enemy2.move_towards_player(player)
-        # for sprite in arr:
-        #     sprite.draw(screen)
-        all_sprites.draw(screen)
+        for sprite in arr:
+            sprite.draw(screen)
+        # all_sprites.draw(screen)
 
         pygame.display.flip()
     pygame.quit()
