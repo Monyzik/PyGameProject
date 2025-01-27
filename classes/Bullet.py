@@ -7,8 +7,8 @@ from classes.Consts import *
 
 
 class Bullet(Object):
-    def __init__(self, path: str, camera, dw_dh: tuple[int, int], x, y, player):
-        super().__init__(path, camera, dw_dh, x, y)
+    def __init__(self, camera, x, y, player, margins_l_t_r_b: tuple[int, int, int, int], animation_or_image):
+        super().__init__(camera, margins_l_t_r_b, x, y, animation_or_image)
         self.x -= self.rect.width / 2
         self.y -= self.rect.height / 2
         mouse_x, mouse_y = pygame.mouse.get_pos()

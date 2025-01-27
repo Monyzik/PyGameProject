@@ -22,7 +22,7 @@ class Camera:
         self.dy += vector[1] * player.speed / FPS
 
     def update(self, player: Player):
-        sprites = pygame.sprite.spritecollide(player, objects, dokill=False)
+        sprites = pygame.sprite.spritecollide(player, enemies, dokill=False)
         for sprite in sprites:
             hitbox_player = player.hitbox
             hitbox_sprite = sprite.rect
