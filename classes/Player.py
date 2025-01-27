@@ -6,12 +6,12 @@ from classes.Consts import *
 from classes.States import States
 
 
-class Player(Sprite):
+class Player(Sprite, AnimatedObject):
     def __init__(self, center, margins_l_t_r_b: tuple[int, int, int, int]):
         Sprite.__init__(self, all_sprites)
+        AnimatedObject.__init__(self, state=States.idle, animation_idle=PLAYER_IDLE_ANIMATION,
+                                animation_run=PLAYER_RUN_ANIMATION)
         self.all_sprites = all_sprites
-        # self.image = pygame.image.load(PLAYER_IMAGE)
-        # self.root_image = pygame.image.load(PLAYER_IMAGE)
         self.margin_left, self.margin_top, self.margin_right, self.margin_bottom = margins_l_t_r_b
         self.frames = []
         self.cut_sheet(pygame.image.load(PLAYER_IMAGE), 1, 6)
@@ -26,7 +26,6 @@ class Player(Sprite):
         self.hitbox_sprite.rect = pygame.Rect(self.x + self.margin_left, self.y + self.margin_top,
                                               self.rect.width - self.margin_left - self.margin_right,
                                               self.rect.height - self.margin_bottom - self.margin_top)
-
 
         self.hitbox = self.hitbox_sprite.rect
         self.clock = pygame.time.Clock()
@@ -50,33 +49,15 @@ class Player(Sprite):
 
             self.time_per_damage = 0
 
-    def cut_sheet(self, sheet, columns, rows):
-        self.rect = pygame.Rect(0, 0, sheet.get_width() // columns,
-                                sheet.get_height() // rows)
-        for j in range(rows):
-            for i in range(columns):
-                frame_location = (self.rect.w * i, self.rect.h * j)
-                self.frames.append(sheet.subsurface(pygame.Rect(
-                    frame_location, self.rect.size)))
-
-
     def draw(self, screen):
         screen.blit(self.image, self.rect)
 
-    def move_animation(self):
-        pass
-
     def update(self):
+        AnimatedObject.update(self)
         t = self.clock.tick()
         self.time_per_shoot += t
         self.time_per_damage += t
         self.time_animation += t
-
-
-        if self.time_animation >= TIME_PER_FRAME * 10:
-            self.cur_frame = (self.cur_frame + 1) % len(self.frames)
-            self.time_animation = 0
-        self.image = self.frames[self.cur_frame]
 
         pass
 
