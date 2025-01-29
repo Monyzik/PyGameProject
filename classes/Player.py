@@ -6,17 +6,16 @@ from classes.Consts import *
 from classes.States import States
 
 
-class Player(Sprite, AnimatedObject):
-    def __init__(self, center, margins_l_t_r_b: tuple[int, int, int, int]):
-        Sprite.__init__(self, all_sprites)
-        AnimatedObject.__init__(self, state=States.idle, animation_idle=PLAYER_IDLE_ANIMATION,
-                                animation_run=PLAYER_RUN_ANIMATION)
+class Player(AnimatedObject):
+    def __init__(self, center, margins_l_t_r_b: tuple[int, int, int, int], camera):
+
+        super().__init__(camera, margins_l_t_r_b, center[0], center[1], States.idle, animation_idle=PLAYER_IDLE_ANIMATION,
+                         animation_run=PLAYER_RUN_ANIMATION)
         self.all_sprites = all_sprites
         self.margin_left, self.margin_top, self.margin_right, self.margin_bottom = margins_l_t_r_b
         self.frames = []
         self.cut_sheet(pygame.image.load(PLAYER_IMAGE), 1, 6)
         self.cur_frame = 0
-        self.image = self.frames[self.cur_frame]
         self.rect = self.image.get_rect()
 
         self.x = center[0] - self.rect.width // 2
@@ -52,12 +51,15 @@ class Player(Sprite, AnimatedObject):
 
     def update(self):
         Sprite.update(self)
-        AnimatedObject.update(self)
+        now = pygame.time.get_ticks()
+        if now - self.last_update > self.frame_rate:
+            self.play_next_frame()
+            self.last_update = now
 
     def shoot(self, camera):
         now = pygame.time.get_ticks()
         if now - self.last_shoot >= TIME_PER_SHOOT:
             x = self.rect.center[0] + camera.dx
             y = self.rect.center[1] + camera.dy
-            Bullet(camera, x, y, self, (0, 0, 0, 0), OBJECT_BULLET)
+            Bullet(camera, x, y, self, (0, 0, 0, 0), BULLET_IMAGE)
             self.last_shoot = now

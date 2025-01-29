@@ -2,27 +2,27 @@ import pygame
 from pygame.sprite import Sprite
 
 from classes import States
-from classes.AnimatedObject import AnimatedObject
 from classes.Consts import *
 
 
-class Object(Sprite, AnimatedObject):
-    def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x, y, animation_or_image):
+class Object(Sprite):
+    def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x, y, path: str=DEFAULT_IMAGE, size: tuple[int, int] = None, color: tuple[int, int, int] = (255, 255, 255)):
         super().__init__(all_sprites)
-        AnimatedObject.__init__(self, state=States.States.idle, animation_idle=animation_or_image)
+        if size is None:
+            self.image = pygame.image.load(path)
+            self.rect = self.image.get_rect()
+        else:
+            self.image = None
+            self.rect = pygame.Rect(x, y, size[0], size[1])
+        self.color = color
         self.x = x
         self.y = y
         self.margin_left, self.margin_top, self.margin_right, self.margin_bottom = margins_l_t_r_b
         self.camera = camera
         self.rect.x = self.x - self.camera.dx
         self.rect.y = self.y - self.camera.dy
-        self.hitbox_sprite = Sprite()
-        self.hitbox_sprite.parent = self
-        self.hitbox_sprite.rect = pygame.Rect(self.x + self.margin_left, self.y + self.margin_top,
-                                              self.rect.width - self.margin_left - self.margin_right,
-                                              self.rect.height - self.margin_bottom - self.margin_top)
-        self.hitbox = self.hitbox_sprite.rect
-        self.objects = None
+        self.update_hitbox()
+
 
     def update(self):
         self.rect.x = self.x - self.camera.dx
@@ -30,8 +30,20 @@ class Object(Sprite, AnimatedObject):
         self.hitbox.x = self.x + self.margin_left - self.camera.dx
         self.hitbox.y = self.y + self.margin_top - self.camera.dy
 
+
+    def update_hitbox(self):
+        self.hitbox_sprite = Sprite()
+        self.hitbox_sprite.parent = self
+        self.hitbox_sprite.rect = pygame.Rect(self.x + self.margin_left, self.y + self.margin_top,
+                                              self.rect.width - self.margin_left - self.margin_right,
+                                              self.rect.height - self.margin_bottom - self.margin_top)
+        self.hitbox = self.hitbox_sprite.rect
+
     def draw(self, screen):
-        screen.blit(self.image, self.rect)
+        if self.image is not None:
+            screen.blit(self.image, self.rect)
+        else:
+            pygame.draw.rect(screen, self.color, self.rect)
 
     def add_collision_with_player(self):
         objects.add(self.hitbox_sprite)

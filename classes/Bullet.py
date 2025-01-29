@@ -16,8 +16,10 @@ class Bullet(Object):
         angle = math.atan2(rel_y, rel_x)
         self.angle = angle
         self.speed = BULLET_SPEED
-        self.time = 0
         self.damage = player.damage
+
+        self.last_update = pygame.time.get_ticks()
+
 
     def update(self):
         super().update()
@@ -26,8 +28,8 @@ class Bullet(Object):
             sprite.parent.take_damage(self.damage)
             self.kill()
 
-        self.time += self.clock.tick()
-        if self.time >= TIME_DURATION:
+        now = pygame.time.get_ticks()
+        if now - self.last_update > TIME_DURATION:
             self.kill()
         dx, dy = math.cos(self.angle) * self.speed / FPS, math.sin(self.angle) * self.speed / FPS
         self.move(dx, dy)

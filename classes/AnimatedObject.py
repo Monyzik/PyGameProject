@@ -1,13 +1,15 @@
 import pygame
 
-from classes.Animation import Animation
 from classes.Consts import *
+from classes.Object import Object
 from classes.States import States
 
 
-class AnimatedObject:
-    def __init__(self, state: States, animation_idle: Animation, animation_run: Animation = None,
+class AnimatedObject(Object):
+    def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x,
+                 y, state: States, animation_idle: Animation, animation_run: Animation = None,
                  animation_get_damage: Animation = None):
+        super().__init__(camera, margins_l_t_r_b, x, y)
         self.state = state
 
         self.animation_idle = animation_idle
@@ -25,7 +27,7 @@ class AnimatedObject:
         self.frame_rate = 100
         self.update_animation()
         self.image = self.frames[self.cur_frame]
-        self.clock = pygame.time.Clock()
+        self.update_hitbox()
 
     def update_animation(self):
         match self.state:
@@ -37,6 +39,7 @@ class AnimatedObject:
                 self.cut_sheet(self.animation_get_damage.get_surface(), *self.animation_get_damage.get_size())
 
     def update(self):
+        super().update()
         now = pygame.time.get_ticks()
         if now - self.last_update > self.frame_rate:
             self.play_next_frame()

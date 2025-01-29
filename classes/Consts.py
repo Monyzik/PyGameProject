@@ -27,10 +27,11 @@ PLAYER_IDLE_ANIMATION = Animation("animates/B_witch_idle_big.png", 1, 6)
 TIME_INVULNERABILITY = 0.3 * 1_000 #ms
 
 """Objects"""
-OBJECT_GRASS = Animation("images/myGrass.png", 1, 1)
+DEFAULT_IMAGE = "images/default.png"
+GRASS_IMAGE = "images/myGrass.png"
 
 
 """Bullets"""
-OBJECT_BULLET = Animation("images/bullet.png", 1, 1)
+BULLET_IMAGE = "images/bullet.png"
 TIME_DURATION = 20 * 1_000 #ms
 BULLET_SPEED = 800 #px per second

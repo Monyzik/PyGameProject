@@ -37,13 +37,14 @@ if __name__ == '__main__':
 
     screen.fill((255, 255, 255))
     camera = Camera(width, height)
-    grass = Object(camera, (0, 0, 0, 0), -(width // 2), -(height // 2), OBJECT_GRASS)
+    grass = Object(camera, (0, 0, 0, 0), -(width // 2), -(height // 2), GRASS_IMAGE)
     grass.image = pygame.transform.scale(grass.image, (width * 2, height * 2))
-    player = Player((width // 2, height // 2), (20, 150, 20, 20))
-    enemy = Enemy(camera, (245, 235, 225, 200), ENEMY_RUN_ANIMATION, 0, 0)
+    grass.hitbox = pygame.Rect(-2000, -2000, 4000, 1)
+    player = Player((width // 2, height // 2), (30, 120, 30, 30), camera)
+    object = Object(camera, (0, 0, 0, 0), 100, 100, size=(200, 200))
+    object.add_collision_with_player()
+    enemy = Enemy(camera, (240, 230, 230, 230), 0, 0)
     enemy.add_collision_with_player()
-    enemy2 = Enemy(camera, (245, 235, 225, 200), ENEMY_RUN_ANIMATION, 1350, 650)
-    enemy2.add_collision_with_player()
     while True:
         screen.fill((255, 255, 255))
         clock.tick(FPS)
@@ -73,6 +74,7 @@ if __name__ == '__main__':
             camera.move(vector, player)
             player.change_state(States.run)
         else:
+            pass
             player.change_state(States.idle)
         # wall.update()
         wall.draw(screen)
@@ -80,7 +82,7 @@ if __name__ == '__main__':
         all_sprites.update()
         arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
         enemy.move_towards_player(player)
-        enemy2.move_towards_player(player)
+        # enemy2.move_towards_player(player)
         for sprite in arr:
             sprite.draw(screen)
         # all_sprites.draw(screen)
