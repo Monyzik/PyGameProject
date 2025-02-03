@@ -10,7 +10,7 @@ class Player(AnimatedObject):
     def __init__(self, center, margins_l_t_r_b: tuple[int, int, int, int], camera):
 
         super().__init__(camera, margins_l_t_r_b, center[0], center[1], States.idle, animation_idle=PLAYER_IDLE_ANIMATION,
-                         animation_run=PLAYER_RUN_ANIMATION)
+                         animation_run=PLAYER_RUN_ANIMATION, animation_destroy=PLAYER_DEATH_ANIMATION, animation_get_damage=PLAYER_TAKE_DAMAGE_ANIMATION)
         self.all_sprites = all_sprites
         self.margin_left, self.margin_top, self.margin_right, self.margin_bottom = margins_l_t_r_b
         self.frames = []
@@ -36,6 +36,7 @@ class Player(AnimatedObject):
         self.max_hp = PLAYER_HP
         self.speed = PLAYER_SPEED
         self.damage = PLAYER_DAMAGE
+        # self.change_state(States.destroy)
 
     def heal(self, health):
         self.hp = min(self.hp + health, self.max_hp)
@@ -43,7 +44,12 @@ class Player(AnimatedObject):
     def take_damage(self, damage):
         now = pygame.time.get_ticks()
         if now - self.time_per_damage > TIME_INVULNERABILITY:
-            self.hp = max(self.hp - damage, 0)
+            print(self.hp)
+            self.hp -= damage
+            if self.hp < 0:
+                super().change_state(States.destroy)
+            else:
+                super().change_state(States.get_damage)
             self.time_per_damage = now
 
     def draw(self, screen):

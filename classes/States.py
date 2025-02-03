@@ -5,3 +5,4 @@ class States(Enum):
     run = 1
     get_damage = 2
     attack = 3
+    destroy = 4

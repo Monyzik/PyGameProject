@@ -8,13 +8,14 @@ from classes.States import States
 class AnimatedObject(Object):
     def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x,
                  y, state: States, animation_idle: Animation, animation_run: Animation = None,
-                 animation_get_damage: Animation = None):
+                 animation_get_damage: Animation = None, animation_destroy: Animation = None):
         super().__init__(camera, margins_l_t_r_b, x, y)
         self.state = state
 
         self.animation_idle = animation_idle
         self.animation_run = animation_run
         self.animation_get_damage = animation_get_damage
+        self.animation_destroy = animation_destroy
 
         self.sheet = self.animation_idle.get_surface()
         columns, rows = self.animation_idle.get_size()
@@ -38,6 +39,9 @@ class AnimatedObject(Object):
             case States.get_damage:
                 self.cur_frame = 0
                 self.cut_sheet(self.animation_get_damage.get_surface(), *self.animation_get_damage.get_size())
+            case States.destroy:
+                self.cur_frame = 0
+                self.cut_sheet(self.animation_destroy.get_surface(), *self.animation_destroy.get_size())
 
     def update(self):
         super().update()
@@ -50,6 +54,9 @@ class AnimatedObject(Object):
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
         if self.state == States.get_damage and self.cur_frame == 0:
             self.change_state(States.idle)
+        if self.state == States.destroy and self.cur_frame == 0:
+            self.kill()
+            self.hitbox_sprite.kill()
         self.image = self.frames[self.cur_frame]
 
     def cut_sheet(self, sheet: pygame.Surface, columns: int, rows: int):

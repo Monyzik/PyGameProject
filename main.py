@@ -46,6 +46,9 @@ if __name__ == '__main__':
     enemy = Enemy(camera, (240, 230, 230, 230), 0, 0)
     enemy.add_collision_with_player()
     while True:
+        if player.hp < 0:
+            pygame.quit()
+            exit(0) #TODO make normal start and end screen (need to delete this line!)
         screen.fill((255, 255, 255))
         clock.tick(FPS)
         camera.update(player)
@@ -72,9 +75,9 @@ if __name__ == '__main__':
 
         if vector != [0, 0]:
             camera.move(vector, player)
-            player.change_state(States.run)
-        else:
-            pass
+            if player.state not in [States.get_damage, States.destroy]:
+                player.change_state(States.run)
+        elif player.state not in [States.get_damage, States.destroy]:
             player.change_state(States.idle)
         # wall.update()
         wall.draw(screen)
@@ -88,4 +91,4 @@ if __name__ == '__main__':
         # all_sprites.draw(screen)
 
         pygame.display.flip()
-    pygame.quit()
+pygame.quit()
