@@ -31,7 +31,7 @@ def start_screen():
 if __name__ == '__main__':
     clock = pygame.time.Clock()
     pygame.init()
-    pygame.display.set_caption("Недореверси")
+    pygame.display.set_caption("Недоигра")
     size = width, height = WIDTH, HEIGHT
     screen = pygame.display.set_mode(size)
 

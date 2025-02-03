@@ -36,6 +36,7 @@ class AnimatedObject(Object):
             case States.idle:
                 self.cut_sheet(self.animation_idle.get_surface(), *self.animation_idle.get_size())
             case States.get_damage:
+                self.cur_frame = 0
                 self.cut_sheet(self.animation_get_damage.get_surface(), *self.animation_get_damage.get_size())
 
     def update(self):
@@ -47,6 +48,8 @@ class AnimatedObject(Object):
 
     def play_next_frame(self):
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
+        if self.state == States.get_damage and self.cur_frame == 0:
+            self.change_state(States.idle)
         self.image = self.frames[self.cur_frame]
 
     def cut_sheet(self, sheet: pygame.Surface, columns: int, rows: int):

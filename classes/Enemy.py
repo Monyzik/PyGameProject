@@ -10,7 +10,7 @@ from classes.States import States
 class Enemy(AnimatedObject):
     def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x=0, y=0, damage=10, speed=MIN_ENEMY_SPEED,
                  hp=50):
-        super().__init__(camera, margins_l_t_r_b, x, y, States.idle, ENEMY_RUN_ANIMATION)
+        super().__init__(camera, margins_l_t_r_b, x, y, States.idle, animation_idle=ENEMY_RUN_ANIMATION, animation_run=ENEMY_RUN_ANIMATION, animation_get_damage=ENEMY_HURT_ANIMATION)
         self.camera = camera
         self.damage = damage
         self.speed = speed
@@ -18,10 +18,12 @@ class Enemy(AnimatedObject):
         enemies.add(self.hitbox_sprite)
 
     def move_towards_player(self, player):
+        if self.state == States.get_damage:
+            return
         dx, dy = player.hitbox.centerx - self.hitbox.centerx, player.hitbox.centery - self.hitbox.centery
         dist = math.hypot(dx, dy)
 
-        # if dist < self.speed:  # TODO make normal condition to stop enemy, when he touch player
+        # if dist == 0:  # TODO make normal condition to stop enemy, when he touch player
         #     return
         dx, dy = dx * self.speed / dist / FPS, dy * self.speed / dist / FPS
         self.move(dx, dy)
@@ -39,6 +41,7 @@ class Enemy(AnimatedObject):
     #     self.rect = self.image.get_rect(center=self.rect.center)
 
     def take_damage(self, damage):
+        super().change_state(States.get_damage)
         self.hp -= damage
         if self.hp <= 0:
             self.kill()

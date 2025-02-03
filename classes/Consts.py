@@ -14,6 +14,7 @@ TIME_PER_FRAME = 800 / FPS #ms
 """Enemy"""
 MIN_ENEMY_SPEED = 330 #px per second
 ENEMY_RUN_ANIMATION = Animation("animates/orc_walk_big.png", 8, 1)
+ENEMY_HURT_ANIMATION = Animation("animates/orc_hurt.png", 4, 1)
 
 """Player"""
 PLAYER_SPEED = 400 #px per second
@@ -30,6 +31,7 @@ TIME_INVULNERABILITY = 0.3 * 1_000 #ms
 DEFAULT_IMAGE = "images/default.png"
 GRASS_IMAGE = "images/myGrass.png"
 
+FIREBALL_ANIMATION = Animation("animates/fireball_animation_small.png", 5, 1)
 
 """Bullets"""
 BULLET_IMAGE = "images/bullet.png"

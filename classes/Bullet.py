@@ -1,14 +1,16 @@
 import math
 
-
+from classes.AnimatedObject import AnimatedObject
 from classes.Enemy import Enemy
 from classes.Object import Object
 from classes.Consts import *
+from classes.States import States
 
 
-class Bullet(Object):
+class Bullet(AnimatedObject):
     def __init__(self, camera, x, y, player, margins_l_t_r_b: tuple[int, int, int, int], animation_or_image):
-        super().__init__(camera, margins_l_t_r_b, x, y, animation_or_image)
+        # Object.__init__(camera, margins_l_t_r_b, x, y, animation_or_image)
+        super().__init__(camera, margins_l_t_r_b, x, y, States.idle, FIREBALL_ANIMATION)
         self.x -= self.rect.width / 2
         self.y -= self.rect.height / 2
         mouse_x, mouse_y = pygame.mouse.get_pos()
