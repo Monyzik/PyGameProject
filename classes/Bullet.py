@@ -8,8 +8,7 @@ from classes.States import States
 
 
 class Bullet(AnimatedObject):
-    def __init__(self, camera, x, y, player, margins_l_t_r_b: tuple[int, int, int, int], animation_or_image):
-        # Object.__init__(camera, margins_l_t_r_b, x, y, animation_or_image)
+    def __init__(self, camera, x, y, player, margins_l_t_r_b: tuple[int, int, int, int]):
         super().__init__(camera, margins_l_t_r_b, x, y, States.idle, FIREBALL_ANIMATION, animation_destroy=FIREBALL_DESTROY)
         self.x -= self.rect.width / 2
         self.y -= self.rect.height / 2
@@ -27,7 +26,7 @@ class Bullet(AnimatedObject):
         super().update()
         if self.state == States.destroy:
             return
-        sprites = pygame.sprite.spritecollide(self.hitbox_sprite, enemies, dokill=False)
+        sprites = pygame.sprite.spritecollide(self.hitbox_sprite, enemies_hiboxes, dokill=False)
         for sprite in sprites:
             sprite.parent.take_damage(self.damage)
             self.change_state(States.destroy)

@@ -1,11 +1,11 @@
 import pygame
 
 from classes.Animation import Animation
-
+player = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 wall = pygame.sprite.Group()
 objects = pygame.sprite.Group()
-enemies = pygame.sprite.Group()
+enemies_hiboxes = pygame.sprite.Group()
 
 WIDTH, HEIGHT = 1600, 900
 FPS = 60
@@ -31,7 +31,7 @@ PLAYER_TAKE_DAMAGE_ANIMATION = Animation("animates/B_witch_take_damage.png", 1, 
 TIME_INVULNERABILITY = 0.3 * 1_000 #ms
 
 """Objects"""
-DEFAULT_IMAGE = "images/default.png"
+DEFAULT_IMAGE = "images/nothing.png"
 GRASS_IMAGE = "images/myGrass.png"
 
 

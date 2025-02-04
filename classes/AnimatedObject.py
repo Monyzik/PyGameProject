@@ -8,8 +8,8 @@ from classes.States import States
 class AnimatedObject(Object):
     def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x,
                  y, state: States, animation_idle: Animation, animation_run: Animation = None,
-                 animation_get_damage: Animation = None, animation_destroy: Animation = None):
-        super().__init__(camera, margins_l_t_r_b, x, y)
+                 animation_get_damage: Animation = None, animation_destroy: Animation = None, group=None):
+        super().__init__(camera, margins_l_t_r_b, x, y, group=group)
         self.state = state
 
         self.animation_idle = animation_idle
@@ -73,3 +73,10 @@ class AnimatedObject(Object):
     def change_state(self, new_state: States):
         self.state = new_state
         self.update_animation()
+
+    def mirror(self, dx):
+        if self.image:
+            if dx < 0:
+                self.image = pygame.transform.flip(self.frames[self.cur_frame], True, False)
+            else:
+                self.image = self.frames[self.cur_frame]

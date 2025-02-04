@@ -30,6 +30,7 @@ class Player(AnimatedObject):
         self.last_shoot = 0
         self.time_per_damage = 0
 
+
         self.rect.x = self.x
         self.rect.y = self.y
         self.hp = PLAYER_HP
@@ -44,7 +45,6 @@ class Player(AnimatedObject):
     def take_damage(self, damage):
         now = pygame.time.get_ticks()
         if now - self.time_per_damage > TIME_INVULNERABILITY:
-            print(self.hp)
             self.hp -= damage
             if self.hp < 0:
                 super().change_state(States.destroy)
@@ -67,5 +67,5 @@ class Player(AnimatedObject):
         if now - self.last_shoot >= TIME_PER_SHOOT:
             x = self.rect.center[0] + camera.dx
             y = self.rect.center[1] + camera.dy
-            Bullet(camera, x, y, self, (0, 0, 0, 0), BULLET_IMAGE)
+            Bullet(camera, x, y, self, (0, 0, 0, 0))
             self.last_shoot = now

@@ -40,18 +40,18 @@ if __name__ == '__main__':
     grass = Object(camera, (0, 0, 0, 0), -(width // 2), -(height // 2), GRASS_IMAGE)
     grass.image = pygame.transform.scale(grass.image, (width * 2, height * 2))
     grass.hitbox = pygame.Rect(-2000, -2000, 4000, 1)
-    player = Player((width // 2, height // 2), (30, 120, 30, 30), camera)
+    player = Player((width // 2, height // 2), (30, 130, 0, 30), camera)
     object = Object(camera, (0, 0, 0, 0), 100, 100, size=(200, 200))
     object.add_collision_with_player()
-    enemy = Enemy(camera, (240, 230, 230, 230), 0, 0)
-    enemy.add_collision_with_player()
+    enemies_arr = []
+    enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 0, 0))
+    enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 500, 0))
     while True:
         if player.hp < 0:
             pygame.quit()
             exit(0) #TODO make normal start and end screen (need to delete this line!)
         screen.fill((255, 255, 255))
         clock.tick(FPS)
-        camera.update(player)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -83,11 +83,13 @@ if __name__ == '__main__':
         wall.draw(screen)
 
         all_sprites.update()
+        camera.update(player)
         arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
-        enemy.move_towards_player(player)
-        # enemy2.move_towards_player(player)
         for sprite in arr:
             sprite.draw(screen)
+
+
+
         # all_sprites.draw(screen)
 
         pygame.display.flip()

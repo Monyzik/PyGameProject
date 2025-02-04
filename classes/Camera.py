@@ -32,13 +32,13 @@ class Camera:
             mini = min(f_1, f_2, f_3, f_4)
             if hitbox_player.left <= hitbox_sprite.right and hitbox_player.center[0] >= hitbox_sprite.center[
                 0] and f_1 == mini:
-                self.dx += hitbox_sprite.right - hitbox_player.left
+                self.dx += hitbox_sprite.right - hitbox_player.left - 1
             if hitbox_player.top <= hitbox_sprite.bottom and hitbox_player.center[1] >= hitbox_sprite.center[
                 1] and f_2 == mini:
-                self.dy += hitbox_sprite.bottom - hitbox_player.top
+                self.dy += hitbox_sprite.bottom - hitbox_player.top - 1
             if hitbox_player.right >= hitbox_sprite.left and hitbox_player.center[0] <= hitbox_sprite.center[
                 0] and f_3 == mini:
-                self.dx -= hitbox_player.right - hitbox_sprite.left
+                self.dx -= hitbox_player.right - hitbox_sprite.left - 1
             if hitbox_player.bottom >= hitbox_sprite.top and hitbox_player.center[1] <= hitbox_sprite.center[
                 1] and f_4 == mini:
-                self.dy -= hitbox_player.bottom - hitbox_sprite.top
+                self.dy -= hitbox_player.bottom - hitbox_sprite.top - 1
