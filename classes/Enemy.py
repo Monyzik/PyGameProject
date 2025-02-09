@@ -21,7 +21,7 @@ class Enemy(AnimatedObject):
         self.speed = speed
         self.hp = hp
         w, h = 130, 10
-        self.hp_bar = HpBar(self.camera, self.hitbox.centerx - w / 2, self.hitbox.top - 50, hp, w, h, self)
+        self.hp_bar = HpBar(self.camera, self.hitbox.centerx - w / 2, self.hitbox.top - 50, hp, w, h)
         self.add_collision_with_player()
         enemies_hiboxes.add(self.hitbox_sprite)
 

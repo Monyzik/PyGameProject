@@ -40,7 +40,7 @@ if __name__ == '__main__':
     grass = Object(camera, (0, 0, 0, 0), -(width // 2), -(height // 2), GRASS_IMAGE)
     grass.image = pygame.transform.scale(grass.image, (width * 2, height * 2))
     grass.hitbox = pygame.Rect(-2000, -2000, 4000, 1)
-    player = Player((width // 2, height // 2), (30, 130, 0, 30), camera)
+    player = Player(size, (30, 130, 45, 30), camera)
     object = Object(camera, (0, 0, 0, 0), 100, 100, size=(200, 200))
     object.add_collision_with_player()
     enemies_arr = []
@@ -87,6 +87,7 @@ if __name__ == '__main__':
         arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
         for sprite in arr:
             sprite.draw(screen)
+        player.hp_bar.draw(screen)
 
 
 
