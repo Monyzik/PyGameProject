@@ -75,6 +75,7 @@ if __name__ == '__main__':
 
         if vector != [0, 0]:
             camera.move(vector, player)
+            player.check_rotate(vector[0])
             if player.state not in [States.get_damage, States.destroy]:
                 player.change_state(States.run)
         elif player.state not in [States.get_damage, States.destroy]:

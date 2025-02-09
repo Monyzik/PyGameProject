@@ -11,6 +11,7 @@ class AnimatedObject(Object):
                  animation_get_damage: Animation = None, animation_destroy: Animation = None, group=None):
         super().__init__(camera, margins_l_t_r_b, x, y, group=group)
         self.state = state
+        self.need_rotate = False
 
         self.animation_idle = animation_idle
         self.animation_run = animation_run
@@ -58,6 +59,7 @@ class AnimatedObject(Object):
             self.kill()
             self.hitbox_sprite.kill()
         self.image = self.frames[self.cur_frame]
+        self.mirror()
 
     def cut_sheet(self, sheet: pygame.Surface, columns: int, rows: int):
         if not sheet:
@@ -74,9 +76,16 @@ class AnimatedObject(Object):
         self.state = new_state
         self.update_animation()
 
-    def mirror(self, dx):
-        if self.image:
-            if dx < 0:
-                self.image = pygame.transform.flip(self.frames[self.cur_frame], True, False)
-            else:
-                self.image = self.frames[self.cur_frame]
+    def check_rotate(self, dx):
+        if dx < 0:
+            self.need_rotate = True
+        else:
+            self.need_rotate = False
+
+    def mirror(self):
+        if self.image and self.need_rotate:
+            self.image = pygame.transform.flip(self.frames[self.cur_frame], True, False)
+            # if dx < 0:
+            #     self.image = pygame.transform.flip(self.frames[self.cur_frame], True, False)
+            # else:
+            #     self.image = self.frames[self.cur_frame]

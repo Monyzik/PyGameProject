@@ -40,7 +40,7 @@ class Enemy(AnimatedObject):
         self.hp_bar.move(dx, dy)
 
 
-        self.mirror(dx) # TODO make normal mirror
+        self.check_rotate(dx) # TODO make normal mirror
         AnimatedObject.update(self)
 
     # def rotate(self):
