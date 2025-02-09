@@ -8,7 +8,7 @@ from classes.States import States
 class AnimatedObject(Object):
     def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x,
                  y, state: States, animation_idle: Animation, animation_run: Animation = None,
-                 animation_get_damage: Animation = None, animation_destroy: Animation = None, group=None):
+                 animation_get_damage: Animation = None, animation_destroy: Animation = None, animation_attack: Animation = None, group=None):
         super().__init__(camera, margins_l_t_r_b, x, y, group=group)
         self.state = state
         self.need_rotate = False
@@ -17,6 +17,7 @@ class AnimatedObject(Object):
         self.animation_run = animation_run
         self.animation_get_damage = animation_get_damage
         self.animation_destroy = animation_destroy
+        self.animation_attack = animation_attack
 
         self.sheet = self.animation_idle.get_surface()
         columns, rows = self.animation_idle.get_size()
@@ -43,6 +44,9 @@ class AnimatedObject(Object):
             case States.destroy:
                 self.cur_frame = 0
                 self.cut_sheet(self.animation_destroy.get_surface(), *self.animation_destroy.get_size())
+            case States.attack:
+                self.cur_frame = 0
+                self.cut_sheet(self.animation_attack.get_surface(), *self.animation_attack.get_size())
 
     def update(self):
         super().update()
@@ -53,7 +57,7 @@ class AnimatedObject(Object):
 
     def play_next_frame(self):
         self.cur_frame = (self.cur_frame + 1) % len(self.frames)
-        if self.state == States.get_damage and self.cur_frame == 0:
+        if self.state in [States.get_damage, States.attack] and self.cur_frame == 0:
             self.change_state(States.idle)
         if self.state == States.destroy and self.cur_frame == 0:
             self.kill()

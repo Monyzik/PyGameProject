@@ -16,6 +16,7 @@ MIN_ENEMY_SPEED = 330 #px per second
 ENEMY_RUN_ANIMATION = Animation("animates/orc_walk_big.png", 8, 1)
 ENEMY_HURT_ANIMATION = Animation("animates/orc_hurt.png", 4, 1)
 ENEMY_DEATH_ANIMATION = Animation("animates/orc_death.png", 4, 1)
+ENEMY_ATTACK_ANIMATION = Animation("animates/orc_attack01.png", 6, 1)
 
 """Player"""
 PLAYER_SPEED = 400 #px per second
