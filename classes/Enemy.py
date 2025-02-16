@@ -11,13 +11,12 @@ from classes.States import States
 
 
 class Enemy(AnimatedObject):
-    def __init__(self, camera, player, enemies_arr, margins_l_t_r_b: tuple[int, int, int, int], x=0, y=0, multiplier=1):
+    def __init__(self, camera, player, margins_l_t_r_b: tuple[int, int, int, int], x=0, y=0, multiplier=1):
         super().__init__(camera, margins_l_t_r_b, x, y, States.idle, animation_idle=ENEMY_RUN_ANIMATION,
                          animation_run=ENEMY_RUN_ANIMATION, animation_get_damage=ENEMY_HURT_ANIMATION,
                          animation_destroy=ENEMY_DEATH_ANIMATION, animation_attack=ENEMY_ATTACK_ANIMATION)
         self.camera = camera
         self.player = player
-        self.enemies_arr = enemies_arr
         self.damage = int(ENEMY_DAMAGE + randint(-5, 5) * multiplier)
         self.speed = int(ENEMY_SPEED + randint(-50, 50) * multiplier)
         self.hp = int(ENEMY_HEALTH + randint(-50, 50) * multiplier)
@@ -64,18 +63,19 @@ class Enemy(AnimatedObject):
         self.hp_bar.take_damage(damage)
         self.hp -= damage
 
-
     def update(self):
         super().update()
         self.hp_bar.update()
         self.move_towards_player(self.player)
-
         if self.hp <= 0:
-            super().change_state(States.destroy)
             try:
-                self.enemies_arr.remove(self)
+                super().change_state(States.destroy)
+                enemies_arr.remove(self)
+                enemies_hiboxes.remove(self.hitbox_sprite)
+                all_sprites.remove(self)
+                all_sprites.remove(self.hp_bar)
                 self.hp_bar.kill()
+                self.kill()
             except Exception as e:
                 print(e)
-
         # self.move()

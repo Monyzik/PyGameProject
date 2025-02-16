@@ -88,9 +88,9 @@ def main_game():
         vertical_wall = Object(camera, (0, 0, 0, 0), 2990, 382 * i - 100, OTHER_VERTICAL_WALL, group=environment)
 
     tower = Object(camera, (0, 0, 0, 0), -145, 2292 - 445, TOWER, group=all_sprites)
-    tower.hitbox.h += 200
+    tower.hitbox.height += 200
     tower = Object(camera, (0, 0, 0, 0), 2975, 2292 - 445, TOWER, group=all_sprites)
-    tower.hitbox.h += 200
+    tower.hitbox.height += 200
 
     left_corner = Object(camera, (0, 0, 0, 0), 55, -250, size=(100, 2300))
     left_corner.add_collision_with_player()
@@ -103,7 +103,6 @@ def main_game():
     player = Player(size, (30, 130, 45, 30), camera)
     # dobject = Object(camera, (0, 0, 0, 0), 100, 100, size=(200, 200))
     # object.add_collision_with_player()
-    enemies_arr = []
     # for _ in range(5):
     #     enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 0, 0))
     # enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 500, 0))
@@ -158,9 +157,11 @@ def main_game():
 
             x, y = x[randint(0, len(x) - 1)], y[randint(0, len(y) - 1)]
 
-            enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), x, y))
+            enemies_arr.append(Enemy(camera, player, (240, 230, 230, 260), x, y))
 
             last_update = now
+
+        print(len(enemies_arr), len(enemies_hiboxes.sprites()))
 
         environment.update()
         for sprite in environment.sprites():

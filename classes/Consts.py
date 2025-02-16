@@ -10,6 +10,7 @@ all_sprites = pygame.sprite.Group()
 environment = pygame.sprite.Group()
 objects = pygame.sprite.Group()
 enemies_hiboxes = pygame.sprite.Group()
+enemies_arr = []
 
 WIDTH, HEIGHT = 1600, 900
 FPS = 60
