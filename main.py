@@ -1,7 +1,9 @@
 import sys
+from random import randint
 
 import pygame
 from pygame import Color
+from pygame.sprite import collide_rect
 
 from classes.Consts import *
 from classes.Bullet import Bullet
@@ -54,20 +56,57 @@ def start_screen():
 def main_game():
     screen.fill((255, 255, 255))
     camera = Camera(width, height)
-    for x in range(8):
+    last_update = pygame.time.get_ticks()
+
+
+    for x in range(18):
+        for y in range(14):
+            grass = Object(camera, (0, 0, 0, 0), x * 255 - 765, y * 255 - 765, GRASS_IMAGE.convert_alpha(), group=environment)
+    for x in range(12):
         for y in range(8):
-            grass = Object(camera, (0, 0, 0, 0), x * 255, y * 255, GRASS_IMAGE.convert_alpha())
-            grass.hitbox = pygame.Rect(-2000, -2000, 4000, 1)
-    # grass = Object(camera, (0, 0, 0, 0), -(width // 2), -(height // 2), GRASS_IMAGE)
-    # grass.image = pygame.transform.scale(grass.image, (width * 2, height * 2))
-    # grass.hitbox = pygame.Rect(-2000, -2000, 4000, 1)
+            grass = Object(camera, (0, 0, 0, 0), x * 255, y * 255, GRASS_IMAGE.convert_alpha(), group=environment)
+
+    for i in range(8):
+        other_hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 65, -300, OTHER_HORIZONTAL_WALL, group=environment)
+        other_hor_wall.image = pygame.transform.scale(other_hor_wall.image, (384 / 2, 384 / 2))
+        other_hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 382 / 2 + 65, -300, OTHER_HORIZONTAL_WALL, group=environment)
+        other_hor_wall.image = pygame.transform.scale(other_hor_wall.image, (384 / 2, 384 / 2))
+        hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 65, -256, HORIZONTAL_WALL, group=environment)
+
+        other_hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 65, 1900, OTHER_HORIZONTAL_WALL, group=all_sprites)
+        other_hor_wall.image = pygame.transform.scale(other_hor_wall.image, (384 / 2, 384 / 2))
+        other_hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 382 / 2 + 65, 1900, OTHER_HORIZONTAL_WALL,
+                                group=all_sprites)
+        other_hor_wall.image = pygame.transform.scale(other_hor_wall.image, (384 / 2, 384 / 2))
+        hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 65, 1950, HORIZONTAL_WALL, group=all_sprites)
+
+    tower = Object(camera, (0, 0, 0, 0), -145, -300, TOWER, group=environment)
+    tower = Object(camera, (0, 0, 0, 0), 2975, -300, TOWER, group=environment)
+
+    for i in range(6):
+        vertical_wall = Object(camera, (0, 0, 0, 0), -130, 382 * i - 100, OTHER_VERTICAL_WALL, group=environment)
+        vertical_wall = Object(camera, (0, 0, 0, 0), 2990, 382 * i - 100, OTHER_VERTICAL_WALL, group=environment)
+
+    tower = Object(camera, (0, 0, 0, 0), -145, 2292 - 445, TOWER, group=all_sprites)
+    tower.hitbox.height += 200
+    tower = Object(camera, (0, 0, 0, 0), 2975, 2292 - 445, TOWER, group=all_sprites)
+    tower.hitbox.height += 200
+
+    left_corner = Object(camera, (0, 0, 0, 0), 55, -250, size=(100, 2300))
+    left_corner.add_collision_with_player()
+    top_corner = Object(camera, (0, 0, 0, 0), 55, -100, size=(3000, 100))
+    top_corner.add_collision_with_player()
+    right_corner = Object(camera, (0, 0, 0, 0), 3070, -250, size=(100, 2300))
+    right_corner.add_collision_with_player()
+    bottom_corner = Object(camera, (0, 0, 0, 0), 55, 2000, size=(3000, 100))
+    bottom_corner.add_collision_with_player()
     player = Player(size, (30, 130, 45, 30), camera)
-    object = Object(camera, (0, 0, 0, 0), 100, 100, size=(200, 200))
-    object.add_collision_with_player()
+    # dobject = Object(camera, (0, 0, 0, 0), 100, 100, size=(200, 200))
+    # object.add_collision_with_player()
     enemies_arr = []
-    for _ in range(5):
-        enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 0, 0))
-    enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 500, 0))
+    # for _ in range(5):
+    #     enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 0, 0))
+    # enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 500, 0))
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -102,19 +141,44 @@ def main_game():
                 player.change_state(States.run)
         elif player.state not in [States.get_damage, States.destroy]:
             player.change_state(States.idle)
-        # wall.update()
-        wall.draw(screen)
+
+        now = pygame.time.get_ticks()
+        if now - last_update > ENEMY_SPAWN_SPEED and len(enemies_arr) < 7:
+
+            x = []
+            y = []
+            if int(155 - camera.dx) < 0:
+                x.append(randint(int(155 - camera.dx), 0))
+            if width < int(3700 - camera.dx):
+                x.append(randint(width, int(3700 - camera.dx)))
+            if int(0 - camera.dy) < 0:
+                y.append(randint(int(0 - camera.dy), 0))
+            if height < int(2000 - camera.dy):
+                y.append(randint(height, int(2000 - camera.dy)))
+
+            x, y = x[randint(0, len(x) - 1)], y[randint(0, len(y) - 1)]
+
+            enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), x, y))
+
+            last_update = now
+
+        environment.update()
+        for sprite in environment.sprites():
+            if collide_rect(camera, sprite):
+                sprite.draw(screen)
 
         all_sprites.update()
         camera.update(player)
         arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
         for sprite in arr:
-            sprite.draw(screen)
+            if collide_rect(camera, sprite):
+                sprite.draw(screen)
         player.hp_bar.draw(screen)
 
         # all_sprites.draw(screen)
 
         pygame.display.flip()
+
 
 
 

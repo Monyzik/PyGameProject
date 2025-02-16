@@ -8,7 +8,7 @@ from classes.Consts import *
 
 
 class Object(Sprite):
-    def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x, y, image: pygame.Surface=DEFAULT_IMAGE, size: tuple[int, int] = None, color: tuple[int, int, int] = (255, 255, 255), group=None, width=0):
+    def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x, y, image: pygame.Surface=DEFAULT_IMAGE, size: tuple[int, int] = None, color: tuple[int, int, int] = None, group=None, width=0):
         self.image = image.convert_alpha()
         self.root_image = image.convert_alpha()
         self.size = size
@@ -24,6 +24,7 @@ class Object(Sprite):
         if size is None:
             self.rect = self.image.get_rect()
         else:
+            self.image = image
             self.rect = pygame.Rect(x, y, size[0], size[1])
         self.margin_left, self.margin_top, self.margin_right, self.margin_bottom = margins_l_t_r_b
         self.rect.x = self.x - self.camera.dx
@@ -47,7 +48,7 @@ class Object(Sprite):
         self.hitbox = self.hitbox_sprite.rect
 
     def draw(self, screen):
-        if self.size is None:
+        if self.color is None:
             screen.blit(self.image, self.rect)
         else:
             pygame.draw.rect(screen, self.color, self.rect, width=self.width)

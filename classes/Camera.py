@@ -11,6 +11,7 @@ class Camera:
         self.dx = 0
         self.dy = 0
         self.clock = pygame.time.Clock()
+        self.rect = pygame.Rect(0, 0, width, height)
 
     def move(self, vector: list[int], player: Player):
         if vector[0] and vector[1]:
