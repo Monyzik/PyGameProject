@@ -18,7 +18,7 @@ TIME_PER_FRAME = 800 / FPS #ms
 """Enemy"""
 ENEMY_SPEED = 450 #px per second
 ENEMY_DAMAGE = 15
-ENEMY_HEALTH = 1
+ENEMY_HEALTH = 50
 ENEMY_SPAWN_SPEED = 3 * 1_000 #ms
 
 ENEMY_RUN_ANIMATION = Animation("animates/orc_walk_big.png", 8, 1)
@@ -29,7 +29,7 @@ ENEMY_ATTACK_ANIMATION = Animation("animates/orc_attack01.png", 6, 1)
 
 """Player"""
 PLAYER_SPEED = 400 #px per second
-PLAYER_HP = 10000
+PLAYER_HP = 200
 PLAYER_DAMAGE = 10
 
 PLAYER_IMAGE: pygame.Surface = pygame.image.load("animates/B_witch_idle_big.png")

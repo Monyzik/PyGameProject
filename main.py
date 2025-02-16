@@ -88,9 +88,9 @@ def main_game():
         vertical_wall = Object(camera, (0, 0, 0, 0), 2990, 382 * i - 100, OTHER_VERTICAL_WALL, group=environment)
 
     tower = Object(camera, (0, 0, 0, 0), -145, 2292 - 445, TOWER, group=all_sprites)
-    tower.hitbox.height += 200
+    tower.hitbox.h += 200
     tower = Object(camera, (0, 0, 0, 0), 2975, 2292 - 445, TOWER, group=all_sprites)
-    tower.hitbox.height += 200
+    tower.hitbox.h += 200
 
     left_corner = Object(camera, (0, 0, 0, 0), 55, -250, size=(100, 2300))
     left_corner.add_collision_with_player()
