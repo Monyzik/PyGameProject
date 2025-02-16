@@ -63,19 +63,16 @@ class Enemy(AnimatedObject):
         self.hp_bar.take_damage(damage)
         self.hp -= damage
 
+        if self.hp <= 0:
+            try:
+                super().change_state(States.destroy)
+                self.hp_bar.kill()
+            except Exception as e:
+                print(e)
+
     def update(self):
         super().update()
         self.hp_bar.update()
         self.move_towards_player(self.player)
-        if self.hp <= 0:
-            try:
-                enemies_arr.remove(self)
-                enemies_hiboxes.remove(self.hitbox_sprite)
-                all_sprites.remove(self)
-                all_sprites.remove(self.hp_bar)
-                super().change_state(States.destroy)
-                self.hp_bar.kill()
-                self.kill()
-            except Exception as e:
-                print(e)
+
         # self.move()
