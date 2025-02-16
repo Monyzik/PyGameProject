@@ -1,10 +1,10 @@
-import pathlib
-from os import PathLike
-from typing import Union, IO
-
 import pygame
 
 from classes.Animation import Animation
+import pygame
+
+from classes.Animation import Animation
+
 player = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 wall = pygame.sprite.Group()
@@ -27,7 +27,7 @@ PLAYER_SPEED = 400 #px per second
 PLAYER_HP = 100
 PLAYER_DAMAGE = 10
 
-PLAYER_IMAGE = "animates/B_witch_idle_big.png"
+PLAYER_IMAGE: pygame.Surface = pygame.image.load("animates/B_witch_idle_big.png")
 PLAYER_RUN_ANIMATION = Animation("animates/B_witch_run_big.png", 1, 8)
 PLAYER_IDLE_ANIMATION = Animation("animates/B_witch_idle_big.png", 1, 6)
 PLAYER_DEATH_ANIMATION = Animation("animates/B_witch_death.png", 1, 6)
@@ -36,12 +36,12 @@ PLAYER_TAKE_DAMAGE_ANIMATION = Animation("animates/B_witch_take_damage.png", 1, 
 TIME_INVULNERABILITY = 0.3 * 1_000 #ms
 
 """Objects"""
-DEFAULT_IMAGE = "images/nothing.png"
-GRASS_IMAGE: str | PathLike[str] = 'images/grass.png'
+DEFAULT_IMAGE: pygame.Surface = pygame.image.load("images/nothing.png")
+GRASS_IMAGE: pygame.Surface = pygame.image.load('images/grass.png')
 
 """Bullets"""
 FIREBALL_ANIMATION = Animation("animates/fireball_animation_small.png", 5, 1)
 FIREBALL_DESTROY = Animation("animates/fireball_destroy.png", 3, 1)
-BULLET_IMAGE = "images/bullet.png"
+BULLET_IMAGE: pygame.Surface = pygame.image.load("images/bullet.png")
 TIME_DURATION = 20 * 1_000 #ms
 BULLET_SPEED = 800 #px per second

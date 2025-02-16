@@ -56,7 +56,7 @@ def main_game():
     camera = Camera(width, height)
     for x in range(8):
         for y in range(8):
-            grass = Object(camera, (0, 0, 0, 0), x * 255, y * 255, GRASS_IMAGE)
+            grass = Object(camera, (0, 0, 0, 0), x * 255, y * 255, GRASS_IMAGE.convert_alpha())
             grass.hitbox = pygame.Rect(-2000, -2000, 4000, 1)
     # grass = Object(camera, (0, 0, 0, 0), -(width // 2), -(height // 2), GRASS_IMAGE)
     # grass.image = pygame.transform.scale(grass.image, (width * 2, height * 2))
@@ -106,7 +106,6 @@ def main_game():
         wall.draw(screen)
 
         all_sprites.update()
-        print(len(all_sprites))
         camera.update(player)
         arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
         for sprite in arr:

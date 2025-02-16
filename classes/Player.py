@@ -15,7 +15,7 @@ class Player(AnimatedObject):
         self.all_sprites = all_sprites
         self.margin_left, self.margin_top, self.margin_right, self.margin_bottom = margins_l_t_r_b
         self.frames = []
-        self.cut_sheet(pygame.image.load(PLAYER_IMAGE), 1, 6)
+        self.cut_sheet(PLAYER_IMAGE, 1, 6)
         self.cur_frame = 0
         self.rect = self.image.get_rect()
 
