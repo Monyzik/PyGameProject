@@ -54,5 +54,5 @@ TOWER = pygame.image.load('images/tower.png')
 FIREBALL_ANIMATION = Animation("animates/fireball_animation_small.png", 5, 1)
 FIREBALL_DESTROY = Animation("animates/fireball_destroy.png", 3, 1)
 BULLET_IMAGE: pygame.Surface = pygame.image.load("images/bullet.png")
-TIME_DURATION = 20 * 1_000 #ms
+TIME_DURATION = 5 * 1_000 #ms
 BULLET_SPEED = 800 #px per second

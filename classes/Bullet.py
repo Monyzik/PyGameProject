@@ -19,7 +19,7 @@ class Bullet(AnimatedObject):
         self.speed = BULLET_SPEED
         self.damage = player.damage
 
-        self.last_update = pygame.time.get_ticks()
+        self.last_update_bullet = pygame.time.get_ticks()
 
 
     def update(self):
@@ -32,7 +32,7 @@ class Bullet(AnimatedObject):
             self.change_state(States.destroy)
 
         now = pygame.time.get_ticks()
-        if now - self.last_update > TIME_DURATION:
+        if now - self.last_update_bullet > TIME_DURATION:
             self.change_state(States.destroy)
         dx, dy = math.cos(self.angle) * self.speed / FPS, math.sin(self.angle) * self.speed / FPS
         self.move(dx, dy)
