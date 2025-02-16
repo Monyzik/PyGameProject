@@ -1,3 +1,7 @@
+import pathlib
+from os import PathLike
+from typing import Union, IO
+
 import pygame
 
 from classes.Animation import Animation
@@ -33,8 +37,7 @@ TIME_INVULNERABILITY = 0.3 * 1_000 #ms
 
 """Objects"""
 DEFAULT_IMAGE = "images/nothing.png"
-GRASS_IMAGE = "images/myGrass.png"
-
+GRASS_IMAGE: str | PathLike[str] = 'images/grass.png'
 
 """Bullets"""
 FIREBALL_ANIMATION = Animation("animates/fireball_animation_small.png", 5, 1)

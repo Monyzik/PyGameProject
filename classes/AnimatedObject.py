@@ -89,7 +89,3 @@ class AnimatedObject(Object):
     def mirror(self):
         if self.image and self.need_rotate:
             self.image = pygame.transform.flip(self.frames[self.cur_frame], True, False)
-            # if dx < 0:
-            #     self.image = pygame.transform.flip(self.frames[self.cur_frame], True, False)
-            # else:
-            #     self.image = self.frames[self.cur_frame]

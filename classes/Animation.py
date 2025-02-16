@@ -1,3 +1,5 @@
+from os import PathLike
+
 import pygame.image
 
 
