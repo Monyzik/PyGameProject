@@ -1,8 +1,6 @@
 import math
 
 from classes.AnimatedObject import AnimatedObject
-from classes.Enemy import Enemy
-from classes.Object import Object
 from classes.Consts import *
 from classes.States import States
 

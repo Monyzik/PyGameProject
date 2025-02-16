@@ -5,7 +5,6 @@ import pygame
 
 from classes.Animation import Animation
 
-player = pygame.sprite.Group()
 all_sprites = pygame.sprite.Group()
 environment = pygame.sprite.Group()
 objects = pygame.sprite.Group()

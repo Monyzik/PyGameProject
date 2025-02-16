@@ -9,28 +9,20 @@ from classes.Consts import *
 from classes.Bullet import Bullet
 from classes.Camera import Camera
 from classes.Enemy import Enemy
+from classes.Map import Map
 from classes.Object import Object
 from classes.Player import Player
+from classes.Score import Score
 from classes.States import States
 
-horizontal_borders = pygame.sprite.Group()
-vertical_borders = pygame.sprite.Group()
-
-sshoot_clock = pygame.time.Clock()
-
+score: int = 0
 
 def terminate():
     pygame.quit()
     sys.exit()
 
 
-def start_screen():
-    intro_text = ["The Game", "",
-                  "Правила игры:",
-                  "Убивайте врагов и побеждайте",
-                  "Для начала игры нажмите любую клавишу"]
-
-    fon = pygame.transform.scale(pygame.image.load('images/start_image.jpg'), (WIDTH, HEIGHT))
+def draw_start_end_screens(intro_text, fon):
     screen.blit(fon, (0, 0))
     font = pygame.font.Font(None, 30)
     text_coord = 50
@@ -53,53 +45,39 @@ def start_screen():
         pygame.display.flip()
         clock.tick(FPS)
 
+
+def start_screen():
+    intro_text = ["The Game", "",
+                  "Правила игры:",
+                  "Убивайте врагов и побеждайте",
+                  "Для начала игры нажмите любую клавишу"]
+
+    fon = pygame.transform.scale(pygame.image.load('images/start_image.jpg'), (WIDTH, HEIGHT))
+    draw_start_end_screens(intro_text, fon)
+
+
+def end_screen():
+    intro_text = ["Death", "",
+                  f"Вы набрали {score} очков ",
+                  "Нажмите любую клавишу, чтобы начать игру заново", ]
+
+    fon = pygame.transform.scale(pygame.image.load('images/end_image.jpg'), (WIDTH, HEIGHT))
+    draw_start_end_screens(intro_text, fon)
+
+
 def main_game():
+    all_sprites.empty()
+    environment.empty()
+    objects.empty()
+    enemies_hiboxes.empty()
+    enemies_arr.clear()
+
+    cur_score = Score()
+
     screen.fill((255, 255, 255))
     camera = Camera(width, height)
     last_update = pygame.time.get_ticks()
-
-
-    for x in range(18):
-        for y in range(14):
-            grass = Object(camera, (0, 0, 0, 0), x * 255 - 765, y * 255 - 765, GRASS_IMAGE.convert_alpha(), group=environment)
-    for x in range(12):
-        for y in range(8):
-            grass = Object(camera, (0, 0, 0, 0), x * 255, y * 255, GRASS_IMAGE.convert_alpha(), group=environment)
-
-    for i in range(8):
-        other_hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 65, -300, OTHER_HORIZONTAL_WALL, group=environment)
-        other_hor_wall.image = pygame.transform.scale(other_hor_wall.image, (384 / 2, 384 / 2))
-        other_hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 382 / 2 + 65, -300, OTHER_HORIZONTAL_WALL, group=environment)
-        other_hor_wall.image = pygame.transform.scale(other_hor_wall.image, (384 / 2, 384 / 2))
-        hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 65, -256, HORIZONTAL_WALL, group=environment)
-
-        other_hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 65, 1900, OTHER_HORIZONTAL_WALL, group=all_sprites)
-        other_hor_wall.image = pygame.transform.scale(other_hor_wall.image, (384 / 2, 384 / 2))
-        other_hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 382 / 2 + 65, 1900, OTHER_HORIZONTAL_WALL,
-                                group=all_sprites)
-        other_hor_wall.image = pygame.transform.scale(other_hor_wall.image, (384 / 2, 384 / 2))
-        hor_wall = Object(camera, (0, 0, 0, 0), 382 * i + 65, 1950, HORIZONTAL_WALL, group=all_sprites)
-
-    tower = Object(camera, (0, 0, 0, 0), -145, -300, TOWER, group=environment)
-    tower = Object(camera, (0, 0, 0, 0), 2975, -300, TOWER, group=environment)
-
-    for i in range(6):
-        vertical_wall = Object(camera, (0, 0, 0, 0), -130, 382 * i - 100, OTHER_VERTICAL_WALL, group=environment)
-        vertical_wall = Object(camera, (0, 0, 0, 0), 2990, 382 * i - 100, OTHER_VERTICAL_WALL, group=environment)
-
-    tower = Object(camera, (0, 0, 0, 0), -145, 2292 - 445, TOWER, group=all_sprites)
-    tower.hitbox.height += 200
-    tower = Object(camera, (0, 0, 0, 0), 2975, 2292 - 445, TOWER, group=all_sprites)
-    tower.hitbox.height += 200
-
-    left_corner = Object(camera, (0, 0, 0, 0), 55, -250, size=(100, 2300))
-    left_corner.add_collision_with_player()
-    top_corner = Object(camera, (0, 0, 0, 0), 55, -100, size=(3000, 100))
-    top_corner.add_collision_with_player()
-    right_corner = Object(camera, (0, 0, 0, 0), 3070, -250, size=(100, 2300))
-    right_corner.add_collision_with_player()
-    bottom_corner = Object(camera, (0, 0, 0, 0), 55, 2000, size=(3000, 100))
-    bottom_corner.add_collision_with_player()
+    Map(all_sprites, camera)
     player = Player(size, (30, 130, 45, 30), camera)
     # dobject = Object(camera, (0, 0, 0, 0), 100, 100, size=(200, 200))
     # object.add_collision_with_player()
@@ -111,8 +89,9 @@ def main_game():
             if event.type == pygame.QUIT:
                 terminate()
         if player.hp < 0:
-            pygame.quit()
-            exit(0)  # TODO make normal start and end screen (need to delete this line!)
+            global score
+            score = cur_score.count
+            return
         screen.fill((255, 255, 255))
         clock.tick(FPS)
 
@@ -142,7 +121,7 @@ def main_game():
             player.change_state(States.idle)
 
         now = pygame.time.get_ticks()
-        if now - last_update > ENEMY_SPAWN_SPEED and len(enemies_arr) < 7:
+        if now - last_update > ENEMY_SPAWN_SPEED:
 
             x = []
             y = []
@@ -157,17 +136,16 @@ def main_game():
 
             x, y = x[randint(0, len(x) - 1)], y[randint(0, len(y) - 1)]
 
-            enemies_arr.append(Enemy(camera, player, (240, 230, 230, 260), x, y))
+            enemies_arr.append(Enemy(camera, player, cur_score, (240, 230, 230, 260), x, y))
 
             last_update = now
-
-        print(len(enemies_arr), len(enemies_hiboxes.sprites()))
 
         environment.update()
         for sprite in environment.sprites():
             if collide_rect(camera, sprite):
                 sprite.draw(screen)
 
+        cur_score.show_score(screen)
         all_sprites.update()
         camera.update(player)
         arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
@@ -188,10 +166,11 @@ if __name__ == '__main__':
     pygame.init()
     pygame.display.set_caption("Недоигра")
     size = width, height = WIDTH, HEIGHT
-    screen = pygame.display.set_mode(size, pygame.RESIZABLE)
+    screen = pygame.display.set_mode(size)
 
     start_screen()
-    main_game()
-
+    while True:
+        main_game()
+        end_screen()
 
 pygame.quit()

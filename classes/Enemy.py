@@ -4,22 +4,26 @@ from random import randint
 
 import pygame
 
+from classes import Camera
 from classes.AnimatedObject import AnimatedObject
 from classes.Consts import *
 from classes.HpBar import HpBar
+from classes.Player import Player
+from classes.Score import Score
 from classes.States import States
 
 
 class Enemy(AnimatedObject):
-    def __init__(self, camera, player, margins_l_t_r_b: tuple[int, int, int, int], x=0, y=0, multiplier=1):
+    def __init__(self, camera: Camera, player: Player, score: Score, margins_l_t_r_b: tuple[int, int, int, int], x=0, y=0, multiplier=1):
         super().__init__(camera, margins_l_t_r_b, x, y, States.idle, animation_idle=ENEMY_RUN_ANIMATION,
                          animation_run=ENEMY_RUN_ANIMATION, animation_get_damage=ENEMY_HURT_ANIMATION,
                          animation_destroy=ENEMY_DEATH_ANIMATION, animation_attack=ENEMY_ATTACK_ANIMATION)
         self.camera = camera
         self.player = player
+        self.score = score
         self.damage = int(ENEMY_DAMAGE + randint(-5, 5) * multiplier)
         self.speed = int(ENEMY_SPEED + randint(-50, 50) * multiplier)
-        self.hp = int(ENEMY_HEALTH + randint(-50, 50) * multiplier)
+        self.hp = int(ENEMY_HEALTH + randint(1, 50) * multiplier)
         w, h = 130, 10
         self.hp_bar = HpBar(self.camera, self.hitbox.centerx - w / 2, self.hitbox.top - 50, self.hp, w, h)
         self.add_collision_with_player()
@@ -64,6 +68,7 @@ class Enemy(AnimatedObject):
         self.hp -= damage
 
         if self.hp <= 0:
+            self.score.score_up()
             try:
                 super().change_state(States.destroy)
                 self.hp_bar.kill()

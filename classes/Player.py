@@ -1,6 +1,5 @@
 from pygame.sprite import Sprite
 
-from classes.AnimatedObject import AnimatedObject
 from classes.Bullet import *
 from classes.Consts import *
 from classes.HpBar import HpBar

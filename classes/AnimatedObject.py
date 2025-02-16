@@ -8,7 +8,8 @@ from classes.States import States
 class AnimatedObject(Object):
     def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x,
                  y, state: States, animation_idle: Animation, animation_run: Animation = None,
-                 animation_get_damage: Animation = None, animation_destroy: Animation = None, animation_attack: Animation = None, group=None):
+                 animation_get_damage: Animation = None, animation_destroy: Animation = None,
+                 animation_attack: Animation = None, group=None):
         super().__init__(camera, margins_l_t_r_b, x, y, group=group)
         self.state = state
         self.need_rotate = False
