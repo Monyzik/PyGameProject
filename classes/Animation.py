@@ -10,7 +10,7 @@ class Animation:
         self.count_of_columns = count_of_columns
 
     def get_surface(self) -> pygame.Surface:
-        return pygame.image.load(self.animation_path)
+        return pygame.image.load(self.animation_path).convert_alpha()
 
     def get_size(self) -> list[int]:
         return [self.count_of_columns, self.count_of_rows]

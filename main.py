@@ -65,7 +65,8 @@ def main_game():
     object = Object(camera, (0, 0, 0, 0), 100, 100, size=(200, 200))
     object.add_collision_with_player()
     enemies_arr = []
-    enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 0, 0))
+    for _ in range(5):
+        enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 0, 0))
     enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 500, 0))
     while True:
         for event in pygame.event.get():
@@ -105,6 +106,7 @@ def main_game():
         wall.draw(screen)
 
         all_sprites.update()
+        print(len(all_sprites))
         camera.update(player)
         arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
         for sprite in arr:

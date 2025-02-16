@@ -9,8 +9,8 @@ from classes.Consts import *
 
 class Object(Sprite):
     def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x, y, path: str=DEFAULT_IMAGE, size: tuple[int, int] = None, color: tuple[int, int, int] = (255, 255, 255), group=None, width=0):
-        self.image = pygame.image.load(path)
-        self.root_image = pygame.image.load(path)
+        self.image = pygame.image.load(path).convert_alpha()
+        self.root_image = pygame.image.load(path).convert_alpha()
         self.size = size
         self.camera = camera
         self.x = x
