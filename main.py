@@ -17,6 +17,7 @@ from classes.States import States
 
 score: int = 0
 
+
 def terminate():
     pygame.quit()
     sys.exit()
@@ -79,11 +80,7 @@ def main_game():
     last_update = pygame.time.get_ticks()
     Map(all_sprites, camera)
     player = Player(size, (30, 130, 45, 30), camera)
-    # dobject = Object(camera, (0, 0, 0, 0), 100, 100, size=(200, 200))
-    # object.add_collision_with_player()
-    # for _ in range(5):
-    #     enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 0, 0))
-    # enemies_arr.append(Enemy(camera, player, enemies_arr, (240, 230, 230, 260), 500, 0))
+
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -97,6 +94,7 @@ def main_game():
 
         vector = [0, 0]
 
+        # Стрельба и передвижение персонажа
         key = pygame.key.get_pressed()
         click = pygame.mouse.get_pressed()
 
@@ -120,9 +118,9 @@ def main_game():
         elif player.state not in [States.get_damage, States.destroy]:
             player.change_state(States.idle)
 
+        # Создание врагов
         now = pygame.time.get_ticks()
         if now - last_update > ENEMY_SPAWN_SPEED:
-
             x = []
             y = []
             if int(155 - camera.dx) < 0:
@@ -141,24 +139,22 @@ def main_game():
             last_update = now
 
         environment.update()
+
+        # Отрисовка всех спрайтов в пределах экрана
         for sprite in environment.sprites():
             if collide_rect(camera, sprite):
                 sprite.draw(screen)
-
-        cur_score.show_score(screen)
         all_sprites.update()
         camera.update(player)
         arr = sorted(list(all_sprites.sprites()), key=lambda sprite: sprite.hitbox.bottom)
         for sprite in arr:
             if collide_rect(camera, sprite):
                 sprite.draw(screen)
-        player.hp_bar.draw(screen)
 
-        # all_sprites.draw(screen)
+        player.hp_bar.draw(screen)
+        cur_score.show_score(screen)
 
         pygame.display.flip()
-
-
 
 
 if __name__ == '__main__':

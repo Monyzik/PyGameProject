@@ -1,11 +1,9 @@
-import pygame
-
 from classes.Consts import *
 from classes.Object import Object
 from classes.States import States
 
 
-class AnimatedObject(Object):
+class AnimatedObject(Object):  # Класс объектов с анимацией
     def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x,
                  y, state: States, animation_idle: Animation, animation_run: Animation = None,
                  animation_get_damage: Animation = None, animation_destroy: Animation = None,

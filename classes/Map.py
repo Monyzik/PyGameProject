@@ -5,7 +5,7 @@ from classes.Consts import GRASS_IMAGE, TOWER, HORIZONTAL_WALL, OTHER_HORIZONTAL
 from classes.Object import Object
 
 
-class Map:
+class Map:  # Класс создания карты игры
     def __init__(self, all_sprites: pygame.sprite.Group, camera: Camera):
         for x in range(18):
             for y in range(14):
@@ -42,11 +42,11 @@ class Map:
         tower = Object(camera, (0, 0, 0, 0), 2975, 2292 - 445, TOWER, group=all_sprites)
         tower.hitbox.h += 200
 
-        left_corner = Object(camera, (0, 0, 0, 0), 55, -250, size=(100, 2300))
+        left_corner = Object(camera, (0, 0, 0, 0), -345, -250, size=(500, 2300))
         left_corner.add_collision_with_player()
-        top_corner = Object(camera, (0, 0, 0, 0), 55, -100, size=(3000, 100))
+        top_corner = Object(camera, (0, 0, 0, 0), 55, -500, size=(3000, 500))
         top_corner.add_collision_with_player()
-        right_corner = Object(camera, (0, 0, 0, 0), 3070, -250, size=(100, 2300))
+        right_corner = Object(camera, (0, 0, 0, 0), 3070, -250, size=(500, 2300))
         right_corner.add_collision_with_player()
-        bottom_corner = Object(camera, (0, 0, 0, 0), 55, 2000, size=(3000, 100))
+        bottom_corner = Object(camera, (0, 0, 0, 0), 55, 2000, size=(3000, 500))
         bottom_corner.add_collision_with_player()

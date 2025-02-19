@@ -2,8 +2,6 @@ import math
 from math import hypot
 from random import randint
 
-import pygame
-
 from classes import Camera
 from classes.AnimatedObject import AnimatedObject
 from classes.Consts import *
@@ -14,7 +12,8 @@ from classes.States import States
 
 
 class Enemy(AnimatedObject):
-    def __init__(self, camera: Camera, player: Player, score: Score, margins_l_t_r_b: tuple[int, int, int, int], x=0, y=0, multiplier=1):
+    def __init__(self, camera: Camera, player: Player, score: Score, margins_l_t_r_b: tuple[int, int, int, int], x=0,
+                 y=0, multiplier=1):
         super().__init__(camera, margins_l_t_r_b, x, y, States.idle, animation_idle=ENEMY_RUN_ANIMATION,
                          animation_run=ENEMY_RUN_ANIMATION, animation_get_damage=ENEMY_HURT_ANIMATION,
                          animation_destroy=ENEMY_DEATH_ANIMATION, animation_attack=ENEMY_ATTACK_ANIMATION)
@@ -39,28 +38,14 @@ class Enemy(AnimatedObject):
         self.move(dx, dy)
         self.hp_bar.move(dx, dy)
 
-        # sprites = pygame.sprite.spritecollide(player.hitbox_sprite, enemies_hiboxes, False)
+        # Получение урона игроком
         if hypot(self.hitbox.centerx - player.hitbox.centerx, self.hitbox.centery - player.hitbox.centery) < 65:
-        # if self.hitbox_sprite in sprites:
             self.change_state(States.attack)
             player.take_damage(self.damage)
             return
 
-
-
-        self.check_rotate(dx) # TODO make normal mirror
+        self.check_rotate(dx)
         AnimatedObject.update(self)
-
-    # def rotate(self):
-    #     rel_x = self.camera.dx - self.x + self.camera.rect.centerx
-    #     rel_y = self.camera.dy - self.y + self.camera.rect.centery
-    #     angle = (180 / math.pi) * -math.atan2(rel_y, rel_x) + 180
-    #     if 90 < angle < 270:
-    #         self.image = pygame.transform.rotate(self.root_image, 360 - int(angle))
-    #         self.image = pygame.transform.flip(self.image, False, True)
-    #     else:
-    #         self.image = pygame.transform.rotate(self.root_image, int(angle))
-    #     self.rect = self.image.get_rect(center=self.rect.center)
 
     def take_damage(self, damage):
         super().change_state(States.get_damage)
@@ -79,5 +64,3 @@ class Enemy(AnimatedObject):
         super().update()
         self.hp_bar.update()
         self.move_towards_player(self.player)
-
-        # self.move()

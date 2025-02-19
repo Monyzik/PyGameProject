@@ -1,6 +1,3 @@
-import pygame
-
-from classes.Object import Object
 from classes.Player import *
 
 
@@ -23,6 +20,8 @@ class Camera:
 
     def update(self, player: Player):
         sprites = pygame.sprite.spritecollide(player, objects, dokill=False)
+
+        # Реализация коллизии
         for sprite in sprites:
             hitbox_player = player.hitbox
             hitbox_sprite = sprite.rect

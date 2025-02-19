@@ -9,9 +9,9 @@ class HpBar:
         self.current_hp = max_hp
         self.max_hp_object = Object(camera, (0, 0, 0, 0), x, y, color=(219, 88, 86), size=(width, height))
         self.current_hp_object = Object(camera, (0, 0, 0, 0), x, y, color=(119, 221, 119), size=(width, height))
-        self.frame = Object(camera, (0, 0, 0, 0), x - width_rect, y - width_rect, color=(0, 0, 0), size=(width + 2 * width_rect, height + 2 * width_rect), width=width_rect)
+        self.frame = Object(camera, (0, 0, 0, 0), x - width_rect, y - width_rect, color=(0, 0, 0),
+                            size=(width + 2 * width_rect, height + 2 * width_rect), width=width_rect)
         self.text = False
-
 
     def update(self):
         self.current_hp_object.rect.width = self.max_hp_object.rect.width * self.current_hp / self.max_hp
@@ -24,12 +24,10 @@ class HpBar:
         self.max_hp_object.kill()
         self.frame.kill()
 
-
     def move(self, dx, dy):
         self.current_hp_object.move(dx, dy)
         self.max_hp_object.move(dx, dy)
         self.frame.move(dx, dy)
-
 
     def draw(self, screen):
         self.max_hp_object.draw(screen)
@@ -50,11 +48,5 @@ class HpBar:
             intro_rect.centerx = self.max_hp_object.rect.centerx
             screen.blit(string_rendered, intro_rect)
 
-
     def add_text(self):
         self.text = True
-
-
-
-
-

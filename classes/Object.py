@@ -1,14 +1,11 @@
-from random import randint
-
-import pygame
 from pygame.sprite import Sprite
 
-from classes import States
 from classes.Consts import *
 
 
-class Object(Sprite):
-    def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x, y, image: pygame.Surface=DEFAULT_IMAGE, size: tuple[int, int] = None, color: tuple[int, int, int] = None, group=None, width=0):
+class Object(Sprite):  # Класс базовых объектов игры
+    def __init__(self, camera, margins_l_t_r_b: tuple[int, int, int, int], x, y, image: pygame.Surface = DEFAULT_IMAGE,
+                 size: tuple[int, int] = None, color: tuple[int, int, int] = None, group=None, width=0):
         self.image = image.convert_alpha()
         self.root_image = image.convert_alpha()
         self.size = size
@@ -31,13 +28,11 @@ class Object(Sprite):
         self.rect.y = self.y - self.camera.dy
         self.update_hitbox()
 
-
     def update(self):
         self.rect.x = self.x - self.camera.dx
         self.rect.y = self.y - self.camera.dy
         self.hitbox.x = self.x + self.margin_left - self.camera.dx
         self.hitbox.y = self.y + self.margin_top - self.camera.dy
-
 
     def update_hitbox(self):
         self.hitbox_sprite = Sprite()
@@ -59,6 +54,3 @@ class Object(Sprite):
     def move(self, dx, dy):
         self.x += dx
         self.y += dy
-
-
-
